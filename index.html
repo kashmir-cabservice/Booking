@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kashmir Cab Service</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #007BFF;
+            color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #detectLocation {
+            margin-top: 10px;
+            background-color: #28a745;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🚖 Kashmir Cab Service</h1>
+    </header>
+    <main>
+        <form id="cabBookingForm">
+            <div class="form-group">
+                <label for="pickup">Pickup Location:</label>
+                <input type="text" id="pickup" name="pickup" placeholder="Enter your pickup location" required>
+                <button type="button" id="detectLocation">📍 Detect Location</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="destination">Destination:</label>
+                <input type="text" id="destination" name="destination" placeholder="Enter your destination" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="cabType">Cab Type:</label>
+                <select id="cabType" name="cabType" required>
+                    <option value="" disabled selected>Select a cab type</option>
+                    <option value="sedan">Sedan</option>
+                    <option value="tempo">Tempo Traveller</option>
+                    <option value="crysta">Crysta</option>
+                    <option value="innova">Innova</option>
+                    <option value="ertiga">Ertiga</option>
+                    <option value="dezire">Dezire</option>
+                    <option value="tavera">Tavera</option>
+                    <option value="urbania">Urbania</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="pickupTime">Pickup Time:</label>
+                <input type="datetime-local" id="pickupTime" name="pickupTime" required>
+            </div>
+
+            <div class="form-group">
+                <label for="fareEstimate">Fare Estimate:</label>
+                <input type="text" id="fareEstimate" name="fareEstimate" readonly placeholder="Fare will be calculated automatically">
+            </div>
+
+            <div class="form-group">
+                <button type="button" id="calculateFare">💰 Calculate Fare</button>
+            </div>
+
+            <div class="form-group">
+                <button type="submit">🚗 Book Now</button>
+            </div>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 Kashmir Cab Service. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Detect current location (requires HTTPS and browser support for Geolocation API)
+        document.getElementById('detectLocation').addEventListener('click', () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        document.getElementById('pickup').value = `Lat: ${latitude}, Lng: ${longitude}`;
+                    },
+                    (error) => {
+                        alert('Unable to retrieve your location. Please enter manually.');
+                    }
+                );
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        });
+
+        // Calculate fare (simple placeholder logic)
+        document.getElementById('calculateFare').addEventListener('click', () => {
+            const cabType = document.getElementById('cabType').value;
+            if (!cabType) {
+                alert('Please select a cab type!');
+                return;
+            }
+
+            // Base fares for different vehicle types
+            const baseFare = {
+                sedan: 10,
+                tempo: 20,
+                crysta: 15,
+                innova: 18,
+                ertiga: 12,
+                dezire: 9,
+                tavera: 14,
+                urbania: 25
+            };
+
+            const distance = Math.random() * 10 + 1; // Random distance for demo purposes
+            const estimatedFare = baseFare[cabType] * distance;
+
+            document.getElementById('fareEstimate').value = `$${estimatedFare.toFixed(2)}`;
+        });
+
+        // Submit form with validation
+        document.getElementById('cabBookingForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+            alert('Your cab has been successfully booked!');
+        });
+    </script>
+</body>
+</html>
