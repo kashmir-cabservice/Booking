@@ -175,10 +175,26 @@
             document.getElementById('fareEstimate').value = `$${estimatedFare.toFixed(2)}`;
         });
 
-        // Submit form with validation
+        // Submit form and forward details to WhatsApp
         document.getElementById('cabBookingForm').addEventListener('submit', (event) => {
             event.preventDefault();
-            alert('Your cab has been successfully booked!');
+
+            const pickup = document.getElementById('pickup').value;
+            const destination = document.getElementById('destination').value;
+            const cabType = document.getElementById('cabType').value;
+            const pickupTime = document.getElementById('pickupTime').value;
+            const fareEstimate = document.getElementById('fareEstimate').value;
+
+            const message = `🚖 Kashmir Cab Service Booking:\n\n`
+                          + `🛠 Pickup Location: ${pickup}\n`
+                          + `📍 Destination: ${destination}\n`
+                          + `🚗 Cab Type: ${cabType}\n`
+                          + `⏰ Pickup Time: ${pickupTime}\n`
+                          + `💰 Fare Estimate: ${fareEstimate}\n`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/917006686584?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
         });
     </script>
 </body>
